@@ -14,8 +14,7 @@ students = [
 ]
 povtor9ki = {}
 for i in students:
-    for j, c in i.items():
-        povtor9ki[c] = povtor9ki.get(c, 0)+1
+    povtor9ki[i['first_name']] = povtor9ki.get(i['first_name'], 0)+1
 
 for i, j in povtor9ki.items():
     print(f'{i}: {j}')
@@ -93,16 +92,13 @@ is_male = {
 dev_o4ko = 0
 mal_o4ko = 0
 clasiki = ''
-for spicki in school:
-    for key, value_vspomnil in spicki.items():
-        if key == 'class':
-            clasiki = value_vspomnil
+for ne_spiski_a_slovari in school:
+    clasiki = ne_spiski_a_slovari['class']
+    for sosiska_v_spiske in ne_spiski_a_slovari['students']:
+        if is_male[sosiska_v_spiske['first_name']]:
+            mal_o4ko += 1
         else:
-            for sosiska_v_spiske in value_vspomnil:
-                if is_male[sosiska_v_spiske['first_name']]:
-                    mal_o4ko += 1
-                else:
-                    dev_o4ko += 1
+            dev_o4ko += 1
     print(f'Класс {clasiki}: девочки {dev_o4ko}, мальчики {mal_o4ko}')
     dev_o4ko, mal_o4ko, clasiki = 0, 0, ''
 
@@ -129,27 +125,20 @@ class_number = ''
 all_classes = {}
 list_for_all = []
 # Ну горит душа просто сделать принт с ответом, но сдерживаюсь=)
-for spicki in school:
-    for key, value_vspomnil in spicki.items():
-        if key == 'class':
-            class_number = value_vspomnil
+for ne_spiski_a_slovari in school:
+    class_number = ne_spiski_a_slovari['class']
+    for sosiska_v_spiske in ne_spiski_a_slovari['students']:
+        if is_male[sosiska_v_spiske['first_name']]:
+            boys += 1
         else:
-            for sosiska_v_spiske in value_vspomnil:
-                if is_male[sosiska_v_spiske['first_name']]:
-                    boys += 1
-                else:
-                    girls += 1
-    all_classes[class_number] = all_classes.get(class_number, {'девочек': girls, 'мальчиков': boys})
-    list_for_all.append(all_classes)
-    girls, boys, class_number, all_classes = 0, 0, '', {}
+            girls += 1
+    all_classes[class_number] = all_classes.get(class_number, [girls, boys])
+    girls, boys, class_number, = 0, 0, ''
 
-if list_for_all[0]['2a']['девочек']>list_for_all[1]['3c']['девочек']:
-    print(f'Больше всего девочек в классе 2a')
-else:
-    print(f'Больше всего девочек в классе 3c')
 
-if list_for_all[0]['2a']['мальчиков']>list_for_all[1]['3c']['мальчиков']:
-    print(f'Больше всего мальчиков в классе 2a')
-else:
-    print(f'Больше всего мальчиков в классе 3c')   
+print(all_classes) 
+devochki = sorted(all_classes.items(), key=lambda x: x[1][0], reverse=True)
+malchiki = sorted(all_classes.items(), key=lambda x: x[1][1], reverse=True)    
 
+print(f'Больше всего девочек в классе {devochki[0][0]}')
+print(f'Больше всего мальчиков в классе {malchiki[0][0]}')
